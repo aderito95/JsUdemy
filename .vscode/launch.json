@@ -8,7 +8,7 @@
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "file:///C:/Users/andre/Javascript/JsUdemy/functions-01-starting-code/index.html",
+            "url": "file:///C:/Users/andre/Javascript/JsUdemy/dom/index.html",
             "webRoot": "${workspaceFolder}"
         }
     ]
