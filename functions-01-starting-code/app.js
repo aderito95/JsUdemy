@@ -31,7 +31,7 @@ const getPlayerChoice = () => {
   ).toUpperCase();
   if (selection !== ROCK && selection !== PAPER && selection !== SCISSORS) {
     alert(`Invalid choice! We chose ${DEFAULT_USER_CHOICE} for you!`);
-    return DEFAULT_USER_CHOICE;
+    return;
   }
   return selection;
 };
@@ -45,7 +45,7 @@ const getComputerChoice = () => {
   } else return SCISSORS;
 };
 
-const getWinner = (cChoice, pChoice) =>
+const getWinner = (cChoice, pChoice = DEFAULT_USER_CHOICE) =>
   cChoice === pChoice
     ? RESULT_DRAW
     : (cChoice === ROCK && pChoice == PAPER) ||
@@ -72,8 +72,79 @@ startGameBtn.addEventListener('click', () => {
   }
   gameIsRunning = true;
   console.log('Game is starting...');
-  const playerChoice = getPlayerChoice();
+  const playerChoice = getPlayerChoice(); //might be undefined
   const computerChoice = getComputerChoice();
-  const winner = getWinner(playerChoice, computerChoice);
-  console.log(winner);
+  let winner;
+  if (playerChoice) {
+    winner = getWinner(computerChoice, playerChoice);
+  } else {
+    winner = getWinner(computerChoice);
+  }
+  let message = `Tou picked ${
+    playerChoice || DEFAULT_USER_CHOICE
+  }, computer picked ${computerChoice}, therefore you `;
+  if (winner == RESULT_DRAW) {
+    message += 'had a draw.';
+  } else if (winner === RESULT_PLAYER_WINS) {
+    message += 'won.';
+  } else message += 'lost.';
+  alert(message);
+  gameIsRunning = false;
 });
+
+// not related to the game
+
+const combine = (resultHanlder, operator, ...numbers) => {
+  const validateNumber = (number) => {
+    return isNaN(number) ? 0 : number;
+  };
+
+  let sum = 0;
+  for (const num of numbers) {
+    if (operator === 'ADD') {
+      sum += validateNumber(num);
+    } else sum -= validateNumber(num);
+  }
+  resultHanlder(sum, 'The result after adding all numbers is: ');
+};
+
+// const subtructUp = function (resultHandler, ...numbers) {
+//   let sum = 0;
+//   for (const num of numbers) {
+//     sum -= num;
+//   }
+//   resultHandler(sum, 'The result after subtracting all numbers is: ');
+// };
+
+const showResult = (messageText, result) => {
+  alert(messageText + ' ' + result);
+};
+
+combine(
+  showResult.bind(this, 'The result after adding all numbers is: '),
+  'ADD',
+  1,
+  5,
+  6,
+  -3,
+  -10
+);
+combine(
+  showResult.bind(this, 'The result after adding all numbers is: '),
+  'ADD',
+  1,
+  5,
+  6,
+  -3,
+  -10,
+  4,
+  12
+);
+combine(
+  showResult.bind(this, 'The result after subtracting all numbers is: '),
+  'SUBTRACT',
+  25,
+  4,
+  5,
+  4
+);
